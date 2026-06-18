@@ -10,6 +10,9 @@ export function BrowserPanel({ liveUrl }: { readonly liveUrl: string }) {
       <iframe
         allow="clipboard-read; clipboard-write"
         className="flex-1 border-0"
+        // It's a watch-only view: allow the live preview to run, but block
+        // top-window navigation, forms, and popups.
+        sandbox="allow-scripts allow-same-origin"
         src={liveUrl}
         title="Agent's browser"
       />

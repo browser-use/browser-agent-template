@@ -25,7 +25,9 @@ type AgentStatus = ReturnType<typeof useEveAgent>["status"];
 /** The latest cloud-browser liveUrl, found anywhere in the conversation (the
  * open_cloud_browser tool result or the agent's text). */
 function extractLiveUrl(messages: readonly EveMessage[]): string | null {
-  const re = /https:\/\/live\.browser-use\.com[^\s"'\\]*/;
+  // Origin-safe: only match when the host is followed by a path/query/fragment
+  // or a boundary — so userinfo tricks like ...com@evil.com don't slip through.
+  const re = /\bhttps:\/\/live\.browser-use\.com(?:[/?#][^\s"'\\]*)?(?=$|[\s"'\\])/;
   let found: string | null = null;
   for (const message of messages) {
     for (const part of message.parts) {

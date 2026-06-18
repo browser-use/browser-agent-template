@@ -22,19 +22,20 @@ git clone https://github.com/browser-use/browser-agent-template.git
 cd browser-agent-template
 
 npm install
-cp .env.example .env
+cp .env.example .env.local
 npm run dev
 ```
 
-Set real values in `.env`. Never commit secrets.
+Set real values in `.env.local`. Never commit secrets.
 
 ## Project Structure
 
 ```
 browser-agent-template/
-├── agent/          # Eve agent: channels, tools, skills, connections
-├── app/            # Next.js UI: chat, settings
-├── shared/         # Types and helpers used by app + agent
+├── agent/          # Eve agent: channels, tools, skills, sandbox
+├── app/            # Next.js UI (chat + live browser panel)
+├── components/     # UI components (ai-elements + shadcn/ui)
+├── lib/            # Shared utilities
 └── docs/           # Documentation (architecture, env, customization)
 ```
 
