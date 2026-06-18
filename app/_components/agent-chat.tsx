@@ -22,6 +22,19 @@ const BETA_TERMS_HREF = "https://vercel.com/docs/release-phases/public-beta-agre
 
 type AgentStatus = ReturnType<typeof useEveAgent>["status"];
 
+/** True only for an https URL whose host is exactly the live-view host. A
+ * startsWith/substring check is unsafe — it also passes
+ * `https://live.browser-use.com.evil.com`. */
+function isLiveUrl(url: unknown): url is string {
+  if (typeof url !== "string") return false;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" && parsed.hostname === "live.browser-use.com";
+  } catch {
+    return false;
+  }
+}
+
 /** The latest cloud-browser liveUrl, taken from the open_cloud_browser tool's
  * structured output. We read the tool result (not the model's chat text) so the
  * URL is canonical — scraping the prose can capture trailing markdown like `**`
@@ -38,10 +51,7 @@ function extractLiveUrl(messages: readonly EveMessage[]): string | null {
       } else if (typeof out === "string") {
         url = out.match(/https:\/\/live\.browser-use\.com[^\s"'\\]*/)?.[0];
       }
-      // Origin-safe: only accept our own live-view host.
-      if (typeof url === "string" && url.startsWith("https://live.browser-use.com")) {
-        found = url;
-      }
+      if (isLiveUrl(url)) found = url;
     }
   }
   return found;
