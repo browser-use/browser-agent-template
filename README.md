@@ -1,8 +1,4 @@
-<p align="center">
-  <a href="https://browser-use.com" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/192012301?v=4" alt="Browser Use" width="120" height="120">
-  </a>
-</p>
+<img src="./public/banner.png" width="100%" alt="Browser Agent Template" />
 
 # Browser Agent Template
 
