@@ -1,6 +1,6 @@
 "use client";
 
-import { useEveAgent } from "eve/react";
+import { type EveMessage, useEveAgent } from "eve/react";
 import { AlertCircleIcon } from "lucide-react";
 import {
   Conversation,
@@ -15,16 +15,34 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { cn } from "@/lib/utils";
 import { AgentMessage } from "./agent-message";
+import { BrowserPanel } from "./browser-panel";
 
 const AGENT_NAME = "browser-agent-template";
 const BETA_TERMS_HREF = "https://vercel.com/docs/release-phases/public-beta-agreement";
 
 type AgentStatus = ReturnType<typeof useEveAgent>["status"];
 
+/** The latest cloud-browser liveUrl, found anywhere in the conversation (the
+ * open_cloud_browser tool result or the agent's text). */
+function extractLiveUrl(messages: readonly EveMessage[]): string | null {
+  // Origin-safe: only match when the host is followed by a path/query/fragment
+  // or a boundary — so userinfo tricks like ...com@evil.com don't slip through.
+  const re = /\bhttps:\/\/live\.browser-use\.com(?:[/?#][^\s"'\\]*)?(?=$|[\s"'\\])/;
+  let found: string | null = null;
+  for (const message of messages) {
+    for (const part of message.parts) {
+      const match = JSON.stringify(part).match(re);
+      if (match) found = match[0];
+    }
+  }
+  return found;
+}
+
 export function AgentChat() {
   const agent = useEveAgent();
   const isBusy = agent.status === "submitted" || agent.status === "streaming";
   const isEmpty = agent.data.messages.length === 0;
+  const liveUrl = extractLiveUrl(agent.data.messages);
 
   const handleSubmit = async (message: PromptInputMessage) => {
     const text = message.text.trim();
@@ -41,7 +59,8 @@ export function AgentChat() {
   );
 
   return (
-    <main className="flex h-dvh flex-col overflow-hidden bg-background text-foreground">
+    <div className="flex h-dvh">
+      <main className="flex flex-1 flex-col overflow-hidden bg-background text-foreground">
       {isEmpty ? null : (
         <header className="flex h-14 shrink-0 items-center justify-center gap-3 pl-4 pr-2">
           <span className="flex min-w-0 items-center gap-2">
@@ -113,7 +132,9 @@ export function AgentChat() {
         ) : null}
         <div className="w-full">{composer}</div>
       </div>
-    </main>
+      </main>
+      {liveUrl ? <BrowserPanel liveUrl={liveUrl} /> : null}
+    </div>
   );
 }
 
