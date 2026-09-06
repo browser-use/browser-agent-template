@@ -62,6 +62,8 @@ It's a single Next.js service: `withEve()` in [`next.config.ts`](next.config.ts)
 
 You'll be asked for a `BROWSER_USE_API_KEY` (from [browser-use.com](https://browser-use.com)) and a model credential (link the Vercel project for the AI Gateway, or set `AI_GATEWAY_API_KEY`).
 
+> **Note:** the default model runs through the Vercel AI Gateway, which **requires paid credits** — without them you'll see _"Free tier users do not have access to this model"_ when the agent tries to browse. To run without the gateway, use a direct provider key (e.g. `ANTHROPIC_API_KEY`) instead — see [ENVIRONMENT.md](./docs/ENVIRONMENT.md#a-model-credential).
+
 ### Self-hosting
 
 **Requirements:** Node.js 24+
