@@ -8,7 +8,7 @@
 
 **Template.** Fork it, customize it, and deploy your own web-browsing agent.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template&env=BROWSER_USE_API_KEY,AI_GATEWAY_API_KEY&envDescription=BROWSER_USE_API_KEY%20from%20browser-use.com%20%7C%20a%20model%20credential%20for%20the%20AI%20Gateway&envLink=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template%2Fblob%2Fmain%2Fdocs%2FENVIRONMENT.md&project-name=browser-agent&repository-name=browser-agent)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template&env=AI_GATEWAY_API_KEY&envDescription=A%20model%20credential%20for%20the%20Vercel%20AI%20Gateway%20(BROWSER_USE_API_KEY%20is%20set%20by%20the%20Browser%20Use%20Marketplace%20integration)&envLink=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template%2Fblob%2Fmain%2Fdocs%2FENVIRONMENT.md&project-name=browser-agent&repository-name=browser-agent&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22browseruse%22%2C%22productSlug%22%3A%22agent%22%7D%5D)
 
 ---
 
@@ -58,9 +58,11 @@ It's a single Next.js service: `withEve()` in [`next.config.ts`](next.config.ts)
 
 ### Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template&env=BROWSER_USE_API_KEY,AI_GATEWAY_API_KEY&envDescription=BROWSER_USE_API_KEY%20from%20browser-use.com%20%7C%20a%20model%20credential%20for%20the%20AI%20Gateway&envLink=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template%2Fblob%2Fmain%2Fdocs%2FENVIRONMENT.md&project-name=browser-agent&repository-name=browser-agent)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template&env=AI_GATEWAY_API_KEY&envDescription=A%20model%20credential%20for%20the%20Vercel%20AI%20Gateway%20(BROWSER_USE_API_KEY%20is%20set%20by%20the%20Browser%20Use%20Marketplace%20integration)&envLink=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template%2Fblob%2Fmain%2Fdocs%2FENVIRONMENT.md&project-name=browser-agent&repository-name=browser-agent&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22browseruse%22%2C%22productSlug%22%3A%22agent%22%7D%5D)
 
-You'll be asked for a `BROWSER_USE_API_KEY` (from [browser-use.com](https://browser-use.com)) and a model credential (link the Vercel project for the AI Gateway, or set `AI_GATEWAY_API_KEY`).
+The deploy flow installs the [Browser Use integration](https://vercel.com/marketplace/browseruse) from the Vercel Marketplace, which creates your Browser Use account, bills through Vercel, and sets `BROWSER_USE_API_KEY` on the project. You'll also be asked for a model credential (link the Vercel project for the AI Gateway, or set `AI_GATEWAY_API_KEY`).
+
+Already have a Browser Use key? Import the repo into Vercel and set `BROWSER_USE_API_KEY` yourself instead (see [ENVIRONMENT.md](./docs/ENVIRONMENT.md)).
 
 ### Self-hosting
 

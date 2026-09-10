@@ -9,7 +9,9 @@ project's **Settings → Environment Variables**.
 
 Your [Browser Use](https://browser-use.com) cloud key (`bu_...`). Used server-side to
 provision and tear down cloud browsers. Never exposed to the model or the sandbox.
-Get one at [browser-use.com](https://browser-use.com).
+The **Deploy with Vercel** button sets it for you by installing the
+[Browser Use Marketplace integration](https://vercel.com/marketplace/browseruse);
+otherwise get one at [browser-use.com](https://browser-use.com).
 
 ### A model credential
 
