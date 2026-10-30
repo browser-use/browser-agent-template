@@ -1,6 +1,7 @@
 "use client";
 
 import { type EveMessage, useEveAgent } from "eve/react";
+import { activeTurn } from "eve/events";
 import { AlertCircleIcon } from "lucide-react";
 import {
   Conversation,
@@ -60,24 +61,28 @@ function extractLiveUrl(messages: readonly EveMessage[]): string | null {
 export function AgentChat() {
   const agent = useEveAgent();
   const isBusy = agent.status === "busy";
+  const isResuming = agent.status === "resuming";
+  // Status is idle while a turn waits for human input, but that turn can still be cancelled.
+  const turnOpen = activeTurn(agent.view) !== undefined;
   const isEmpty = agent.messages.length === 0;
   const liveUrl = extractLiveUrl(agent.messages);
 
   const handleSubmit = async (message: PromptInputMessage) => {
     const text = message.text.trim();
-    if (!text || isBusy) return;
+    if (!text || isBusy || isResuming) return;
 
     await agent.send(text);
   };
 
   const composer = (
     <PromptInput onSubmit={handleSubmit}>
-      <PromptInputTextarea placeholder="Send a message…" />
+      <PromptInputTextarea disabled={isResuming} placeholder="Send a message…" />
       <PromptInputSubmit
+        disabled={isResuming && !turnOpen}
         onStop={() => {
           void agent.cancel();
         }}
-        status={isBusy ? "streaming" : "ready"}
+        status={turnOpen ? "streaming" : "ready"}
       />
     </PromptInput>
   );
@@ -119,7 +124,7 @@ export function AgentChat() {
           <ConversationContent className="mx-auto w-full max-w-3xl gap-6 px-4 py-6 sm:px-6">
             {agent.messages.map((message, index) => (
               <AgentMessage
-                canRespond={agent.status !== "resuming"}
+                canRespond={!isResuming}
                 isStreaming={
                   isBusy && index === agent.messages.length - 1
                 }

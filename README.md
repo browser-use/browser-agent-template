@@ -75,6 +75,13 @@ cp .env.example .env.local
 npm run dev
 ```
 
+> **Eve 1 release prerequisite:** This migration intentionally keeps the
+> `@browser_use/eve` browser extension and its normal peer-dependency validation.
+> The currently pinned `0.0.4` release declares `eve <1`, so a clean npm install
+> remains blocked until Browser Use publishes an Eve 1-compatible extension release.
+> Do not remove the plugin or install with peer-dependency bypass flags; upgrade the
+> extension when that release is available.
+
 Open [http://localhost:3000](http://localhost:3000) and ask: _"Go to news.ycombinator.com and give me the top 5 posts."_
 
 **Required environment variables:**
