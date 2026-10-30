@@ -23,12 +23,12 @@
     "@streamdown/math": "1.0.2",
     "@streamdown/mermaid": "1.0.2",
     "@tailwindcss/postcss": "4.3.0",
-    "@vercel/connect": "0.2.2",
-    "ai": "7.0.0-beta.178",
+    "@vercel/connect": "2.6.0",
+    "ai": "7.0.158",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
-    "eve": "^0.11.4",
+    "eve": "^1.0.0-rc.0",
     "lucide-react": "1.16.0",
     "motion": "12.40.0",
     "nanoid": "5.1.16",
@@ -51,10 +51,10 @@
     "microsandbox": "^0.5.7"
   },
   "overrides": {
-    "ai": "7.0.0-beta.178"
+    "ai": "7.0.158"
   },
   "resolutions": {
-    "ai": "7.0.0-beta.178"
+    "ai": "7.0.158"
   },
   "engines": {
     "node": "24.x"
