@@ -56,6 +56,13 @@ It's a single Next.js service: `withEve()` in [`next.config.ts`](next.config.ts)
 
 ## Quick Start
 
+> **Eve 1 release prerequisite:** This migration intentionally keeps the
+> `@browser_use/eve` browser extension and its normal peer-dependency validation.
+> The currently pinned `0.0.4` release declares `eve <1`, so a clean npm install
+> remains blocked until Browser Use publishes an Eve 1-compatible extension release.
+> Do not remove the plugin or install with peer-dependency bypass flags; upgrade the
+> extension when that release is available.
+
 ### Deploy to Vercel
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template&env=BROWSER_USE_API_KEY,AI_GATEWAY_API_KEY&envDescription=BROWSER_USE_API_KEY%20from%20browser-use.com%20%7C%20a%20model%20credential%20for%20the%20AI%20Gateway&envLink=https%3A%2F%2Fgithub.com%2Fbrowser-use%2Fbrowser-agent-template%2Fblob%2Fmain%2Fdocs%2FENVIRONMENT.md&project-name=browser-agent&repository-name=browser-agent)
@@ -74,13 +81,6 @@ npm install
 cp .env.example .env.local
 npm run dev
 ```
-
-> **Eve 1 release prerequisite:** This migration intentionally keeps the
-> `@browser_use/eve` browser extension and its normal peer-dependency validation.
-> The currently pinned `0.0.4` release declares `eve <1`, so a clean npm install
-> remains blocked until Browser Use publishes an Eve 1-compatible extension release.
-> Do not remove the plugin or install with peer-dependency bypass flags; upgrade the
-> extension when that release is available.
 
 Open [http://localhost:3000](http://localhost:3000) and ask: _"Go to news.ycombinator.com and give me the top 5 posts."_
 
