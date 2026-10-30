@@ -43,7 +43,7 @@ function extractLiveUrl(messages: readonly EveMessage[]): string | null {
   let found: string | null = null;
   for (const message of messages) {
     for (const part of message.parts) {
-      if (part.type !== "dynamic-tool" || part.toolName !== "open_cloud_browser") continue;
+      if (part.type !== "tool" || part.name !== "open_cloud_browser") continue;
       const out = part.output;
       let url: unknown;
       if (out && typeof out === "object" && "liveUrl" in out) {
@@ -59,21 +59,26 @@ function extractLiveUrl(messages: readonly EveMessage[]): string | null {
 
 export function AgentChat() {
   const agent = useEveAgent();
-  const isBusy = agent.status === "submitted" || agent.status === "streaming";
-  const isEmpty = agent.data.messages.length === 0;
-  const liveUrl = extractLiveUrl(agent.data.messages);
+  const isBusy = agent.status === "busy";
+  const isEmpty = agent.messages.length === 0;
+  const liveUrl = extractLiveUrl(agent.messages);
 
   const handleSubmit = async (message: PromptInputMessage) => {
     const text = message.text.trim();
     if (!text || isBusy) return;
 
-    await agent.send({ message: text });
+    await agent.send(text);
   };
 
   const composer = (
     <PromptInput onSubmit={handleSubmit}>
       <PromptInputTextarea placeholder="Send a message…" />
-      <PromptInputSubmit onStop={agent.stop} status={agent.status} />
+      <PromptInputSubmit
+        onStop={() => {
+          void agent.cancel();
+        }}
+        status={isBusy ? "streaming" : "ready"}
+      />
     </PromptInput>
   );
 
@@ -112,15 +117,17 @@ export function AgentChat() {
       {isEmpty ? null : (
         <Conversation className="min-h-0 flex-1">
           <ConversationContent className="mx-auto w-full max-w-3xl gap-6 px-4 py-6 sm:px-6">
-            {agent.data.messages.map((message, index) => (
+            {agent.messages.map((message, index) => (
               <AgentMessage
-                canRespond={!isBusy}
+                canRespond={agent.status !== "resuming"}
                 isStreaming={
-                  agent.status === "streaming" && index === agent.data.messages.length - 1
+                  isBusy && index === agent.messages.length - 1
                 }
                 key={message.id}
                 message={message}
-                onInputResponses={(inputResponses) => agent.send({ inputResponses })}
+                onAnswers={async (answers) => {
+                  await agent.respond(answers);
+                }}
               />
             ))}
           </ConversationContent>
@@ -158,15 +165,9 @@ export function AgentChat() {
 }
 
 function StatusDot({ status }: { readonly status: AgentStatus }) {
-  const isLive = status === "submitted" || status === "streaming";
+  const isLive = status === "busy";
   const tone =
-    status === "error"
-      ? "bg-destructive"
-      : isLive
-        ? "bg-emerald-500"
-        : status === "ready"
-          ? "bg-muted-foreground"
-          : "bg-muted-foreground/50";
+    isLive ? "bg-emerald-500" : status === "idle" ? "bg-muted-foreground" : "bg-muted-foreground/50";
 
   return (
     <span className="relative flex size-1">
